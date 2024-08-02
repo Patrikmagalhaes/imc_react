@@ -4,16 +4,24 @@ import './App.css'
 function App() {
   const [peso, setPeso] = useState(0)
   const [altura, setAltura] = useState(0)
-  const [imc, setImc] = useState(0)
-  const [classificacao, setClassificacao] = useState()
-
-  function classificaIMC(v) {
-    if (v < 18.5) {
+  const [imc, setImc] = useState('')
+  const [classificacao, setClassificacao] = useState('Ex: Peso Normal')
+  console.log(imc)
+  function classificaIMC(valorImc) {
+    if (valorImc < 18.5) {
       setClassificacao('Abaixo do peso')
-      console.log(v)
-    } else if (v > 18.6 && v < 24.9) {
+
+    } else if (valorImc > 18.6 && valorImc <= 24.9) {
       setClassificacao('Peso normal')
-      console.log(v)
+    }
+    else if (valorImc >= 25 && valorImc <= 29.9) {
+      setClassificacao('Sobrepeso')
+    }
+    else if (valorImc >= 30 && valorImc <= 34.9) {
+      setClassificacao(' Obesidade grau 1')
+    }
+    else if (valorImc => 40) {
+      setClassificacao('Obesidade extrema')
     }
   }
 
@@ -21,19 +29,22 @@ function App() {
     e.preventDefault()
     let quadradoPeso = altura * altura
     let novoImc = peso / quadradoPeso
-    setImc(novoImc)
-    classificaIMC(novoImc)
+    setImc(novoImc.toFixed(1))
+    classificaIMC(novoImc.toFixed(1))
   }
 
   return (
     <>
       <form>
         <h1>IMC</h1>
-        <input type="number" placeholder='Digite sua altura' onChange={(e) => setAltura(parseFloat(e.target.value))} />
-        <input type="number" placeholder='Digite seu peso KG' onChange={(e) => setPeso(parseFloat(e.target.value))} />
-        <p>Seu IMC: {imc.toFixed(1)}</p>
-        Classificação: <span>{classificacao}</span>
-        <button onClick={calculaIMC}>Calcular</button>
+        <input type="number" placeholder='Digite sua altura' max={'3'} onChange={(e) => setAltura(parseFloat(e.target.value))} />
+        <input type="number" placeholder='Digite seu peso KG' max={'300'} onChange={(e) => setPeso(parseFloat(e.target.value))} />
+        <div className='cardButon'>
+          <p className='imc'>Seu IMC: {imc == 0.0 ? <span>Ex</span> : imc}   </p>
+          Classificação: <span>{classificacao}</span>
+          <button onClick={calculaIMC}>Calcular</button>
+
+        </div>
       </form>
     </>
   )
